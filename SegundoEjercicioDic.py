@@ -13,22 +13,28 @@ nombreAlumno = input("Dime el nombre de un alumno: ")
 lista = []
 
 while nombreAlumno.upper() != "SALIR":
+    nombreAlumno = nombreAlumno.capitalize()  # Asegurar formato correcto
     numAsignaturas = int(input("Dime el número de asignaturas a registrar: "))
+    diccionario = {}
 
     for i in range(numAsignaturas):
         nombreAsignatura = input("Dime el nombre de la asignatura: ")
         notaAsignatura = int(input("Dime la nota de esa asignatura: "))
-        tupla = (nombreAlumno, {nombreAsignatura:notaAsignatura})
-        lista.append(tupla)
+        diccionario[nombreAsignatura] = notaAsignatura  # Guardar correctamente
+
+    tupla = (nombreAlumno, diccionario)  # Guardar todo el diccionario, no solo la última materia
+    lista.append(tupla)
+
     nombreAlumno = input("Dime el nombre de un alumno: ")
 
 asignaturaMedia = input("Dime el nombre de la asignatura a conocer su media: ")
 
-print(lista)
 notas = []
-notasTotal = 0
-for i in range(len(lista)):
-    notas.append(lista[i][1][asignaturaMedia])
-    notasTotal = notasTotal + notas[i]
+for alumno in lista:
+    if asignaturaMedia in alumno[1]:  # Verificar que la asignatura exista
+        notas.append(alumno[1][asignaturaMedia])
 
-print("Media de ", asignaturaMedia, ": ", notasTotal/len(lista))
+if notas:
+    print(f"Media de {asignaturaMedia}: {sum(notas) / len(notas)}")
+else:
+    print(f"No hay datos para la asignatura {asignaturaMedia}")
